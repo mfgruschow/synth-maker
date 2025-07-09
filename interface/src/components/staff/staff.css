@@ -1,0 +1,7 @@
+.staff {
+    width: 100%;
+    border: solid 1px black;
+    height: 32px;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+}
