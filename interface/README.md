@@ -1,3 +1,9 @@
+# Functionality:
+The app consists of a 4x8 grid of 48 note blocks.  You should be able to left click on a note block and select the chord you want it to be.  You can then click and drag that note across the other blocks to propagate them.  There will also be a BPM adjuster at the top of the screen to speed up/slow down the song, and an instrument selector.  The final piece of functionality is the ability to download a midi file that is compatible with Garage Band.  
+
+## Future functionality:
+Be able to add quarter notes/eighth notes.  Mobile functionlity for tablets.  
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
