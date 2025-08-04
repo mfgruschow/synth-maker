@@ -1,81 +1,103 @@
-import { useEffect, useRef, useState } from 'react';
-// import { useDragContext } from '../../contexts/use-drag-context';
-import './note-block.css';
-import type { MidiWriterNote } from '../../utility/types';
-import { useDragContext } from '../../contexts/use-drag-context';
+import { useEffect, useRef, useState } from "react";
+import "./note-block.css";
+import type { MidiWriterNote } from "../../utility/types";
+import { useDragContext } from "../../contexts/drag/use-drag-context";
+import noteIcon from "../../assets/music-note-icon.svg";
 
-function NoteBlock() {
-    const { isDragging, setIsDragging } = useDragContext();
+function NoteBlock({ noteId }: { noteId: number }) {
+  const { isDragging, setIsDragging } = useDragContext();
 
-    const [note, setNote] = useState<MidiWriterNote | null>(null);
-    const [dragVisited, setDragVisited] = useState(false);
+  const [note, setNote] = useState<MidiWriterNote | null>(null);
+  const [dragVisited, setDragVisited] = useState(false);
 
-    const noteRef = useRef<HTMLDivElement>(null);
-    const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const noteRef = useRef<HTMLDivElement>(null);
+  const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const handleDragStart = (event: React.DragEvent) => {
-        if (!note) return;
+  const handleDragStart = (event: React.DragEvent) => {
+    if (!note) return;
 
-        setIsDragging!(true); // set the global context state to dragging
+    setIsDragging!(true); // set the global context state to dragging
 
-        console.info('Drag starting', note);
+    console.info("Drag starting", note);
 
-        noteRef.current?.classList.add('dragging');
+    noteRef.current?.classList.add("dragging");
 
-        event.dataTransfer.setData('text/plain', JSON.stringify(note)); // set the data to be transferred
-        event.dataTransfer.effectAllowed = 'copy'; // set the effect allowed for the drag operation
-    };
+    // set the data to be transferred
+    event.dataTransfer.setData("text/plain", JSON.stringify(note));
+    // set the effect allowed for the drag operation
+    event.dataTransfer.effectAllowed = "copy";
+  };
 
-    const handleDragOver = (event: React.DragEvent) => {
+  const handleDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
 
-        event.preventDefault();
+    if (!timeoutId.current && isDragging && !dragVisited) {
+      // is there is no timeout, and we are dragging and haven't visited the drag area yet
+      setDragVisited(true);
 
-        if (!timeoutId.current && isDragging && !dragVisited) {
-            // is there is no timeout, and we are dragging and haven't visited the drag area yet
-            setDragVisited(true);
+      timeoutId.current = setTimeout(() => {
+        // after 300ms, we can assume this is a valid drag operation
+        const data: MidiWriterNote = JSON.parse(
+          event.dataTransfer.getData("text/plain")
+        );
 
-            timeoutId.current = setTimeout(() => {
-                // after 300ms, we can assume this is a valid drag operation
-                const data: MidiWriterNote = JSON.parse(event.dataTransfer.getData('text/plain'));
+        noteRef.current?.classList.add("drag-selected");
 
-                noteRef.current?.classList.add('drag-selected');
-
-                console.log('Drag Over Data:', data);
-            }, 400)
-        }
-    };
-
-    const handleDragEnd = (event: React.DragEvent) => {
-        // set global drag state to false
-        setIsDragging!(false);
-
-        const data: MidiWriterNote = JSON.parse(event.dataTransfer.getData('text/plain'));
-
-        setNote(data);
-        noteRef.current?.classList.remove('dragging');
+        console.log("Drag Over Data:", data);
+      }, 400);
     }
+  };
 
-    useEffect(() => {
-        if (!isDragging && dragVisited) {
-            // the drag operation has ended, reset the dragVisited state
-            // and clear the timeout if it exists
-            console.log('Drag ended, resetting state');
+  const handleDragEnd = (event: React.DragEvent) => {
+    // set global drag state to false
+    setIsDragging!(false);
 
-            setDragVisited(false);
+    const data: MidiWriterNote = JSON.parse(
+      event.dataTransfer.getData("text/plain")
+    );
 
-            noteRef.current?.classList.remove('drag-selected');
+    setNote(data);
+    noteRef.current?.classList.remove("dragging");
+  };
 
-            if (timeoutId.current) {
-                clearTimeout(timeoutId.current);
-                timeoutId.current = null;
-            }
-        }
-    }, [isDragging, dragVisited]);
+  useEffect(() => {
+    if (!note) {
+      noteRef.current?.classList.add("empty");
+    } else {
+      noteRef.current?.classList.remove("empty");
+    }
+  }, [note]);
 
-    return (
-        <div ref={noteRef} draggable={!!note} onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd} className='note-block'>
-            <p>test</p>
-        </div>
-    )
+  useEffect(() => {
+    if (!isDragging && dragVisited) {
+      // the drag operation has ended, reset the dragVisited state
+      // and clear the timeout if it exists
+
+      setDragVisited(false);
+
+      noteRef.current?.classList.remove("drag-selected");
+
+      if (timeoutId.current) {
+        clearTimeout(timeoutId.current);
+        timeoutId.current = null;
+      }
+    }
+  }, [isDragging, dragVisited]);
+
+  return (
+    <div
+      ref={noteRef}
+      draggable={!!note}
+      onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDragEnd={handleDragEnd}
+      className="note-block"
+    >
+      {/* Import the SVG as a module */}
+      {/* @ts-ignore */}
+
+      <img className="note-icon" src={noteIcon} alt="Note Icon" />
+    </div>
+  );
 }
-export default NoteBlock
+export default NoteBlock;
