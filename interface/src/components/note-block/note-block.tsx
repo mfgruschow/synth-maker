@@ -10,17 +10,24 @@ function NoteBlock() {
     const [note, setNote] = useState<MidiWriterNote | null>(null);
     const [dragVisited, setDragVisited] = useState(false);
 
+    const noteRef = useRef<HTMLDivElement>(null);
     const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const handleDragStart = (event: React.DragEvent) => {
+        if (!note) return;
+
         setIsDragging!(true); // set the global context state to dragging
 
         console.info('Drag starting', note);
+
+        noteRef.current?.classList.add('dragging');
+
         event.dataTransfer.setData('text/plain', JSON.stringify(note)); // set the data to be transferred
         event.dataTransfer.effectAllowed = 'copy'; // set the effect allowed for the drag operation
     };
 
     const handleDragOver = (event: React.DragEvent) => {
+
         event.preventDefault();
 
         if (!timeoutId.current && isDragging && !dragVisited) {
@@ -31,8 +38,10 @@ function NoteBlock() {
                 // after 300ms, we can assume this is a valid drag operation
                 const data: MidiWriterNote = JSON.parse(event.dataTransfer.getData('text/plain'));
 
+                noteRef.current?.classList.add('drag-selected');
+
                 console.log('Drag Over Data:', data);
-            }, 300)
+            }, 400)
         }
     };
 
@@ -43,6 +52,7 @@ function NoteBlock() {
         const data: MidiWriterNote = JSON.parse(event.dataTransfer.getData('text/plain'));
 
         setNote(data);
+        noteRef.current?.classList.remove('dragging');
     }
 
     useEffect(() => {
@@ -53,6 +63,8 @@ function NoteBlock() {
 
             setDragVisited(false);
 
+            noteRef.current?.classList.remove('drag-selected');
+
             if (timeoutId.current) {
                 clearTimeout(timeoutId.current);
                 timeoutId.current = null;
@@ -61,7 +73,7 @@ function NoteBlock() {
     }, [isDragging, dragVisited]);
 
     return (
-        <div draggable onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd} className='note-block'>
+        <div ref={noteRef} draggable={!!note} onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd} className='note-block'>
             <p>test</p>
         </div>
     )

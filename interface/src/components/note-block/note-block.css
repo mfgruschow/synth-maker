@@ -3,3 +3,18 @@
     height: 32px;
     outline: solid 1px black;
 }
+
+.note-block:hover {
+    cursor: pointer;
+    box-shadow: 0 0 6px 2px rgba(150, 150, 150, 0.7);
+}
+
+.note-block.dragging {
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 12px 4px rgba(0, 255, 0, 0.7);
+}
+
+.note-block.drag-selected {
+    outline: solid 2px blue;
+    box-shadow: 0 0 8px 2px rgba(0, 123, 255, 0.7);
+}
