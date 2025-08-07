@@ -1,8 +1,12 @@
 .note-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height: auto;
+  height: 48px;
   outline: solid 1px black;
-  text-align: center;
+  border-radius: 4px;
+  padding: 4px;
 }
 
 .note-block:hover {
@@ -26,6 +30,8 @@
 }
 
 .note-icon {
-  height: 48px;
-  width: 48px;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  filter: brightness(1) invert(1);
 }

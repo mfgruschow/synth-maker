@@ -3,6 +3,7 @@ import "./note-block.css";
 import type { MidiWriterNote } from "../../utility/types";
 import { useDragContext } from "../../contexts/drag/use-drag-context";
 import noteIcon from "../../assets/music-note-icon.svg";
+import restIcon from "../../assets/rest-note-icon.svg";
 
 function NoteBlock({ noteId }: { noteId: number }) {
   const { isDragging, setIsDragging } = useDragContext();
@@ -95,8 +96,11 @@ function NoteBlock({ noteId }: { noteId: number }) {
     >
       {/* Import the SVG as a module */}
       {/* @ts-ignore */}
-
-      <img className="note-icon" src={noteIcon} alt="Note Icon" />
+      {note ? (
+        <img className="note-icon" src={noteIcon} alt="Note Icon" />
+      ) : (
+        <img className="note-icon" src={restIcon} alt="Empty Note Icon" />
+      )}
     </div>
   );
 }

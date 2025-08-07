@@ -1,8 +1,9 @@
 import { createContext } from "react";
+import type { NoteSelectInfo } from "../../utility/types";
 
 interface NoteSelectModalContextType {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  isModalOpen: boolean;
+  handleOpen: (isOpen: boolean, noteSelectInfo?: NoteSelectInfo) => void;
 }
 
 export const NoteSelectModalContext = createContext<

@@ -22,12 +22,16 @@ function App() {
   console.log(write.dataUri());
 
   return (
-    <>
-      <h1>Melody</h1>
-      <DragProvider>
-        <Staff />
-      </DragProvider>
-    </>
+    <div className="App">
+      <header className="app-header">
+        <h1 className="app-title">SynthMaker</h1>
+      </header>
+      <main>
+        <DragProvider>
+          <Staff />
+        </DragProvider>
+      </main>
+    </div>
   );
 }
 

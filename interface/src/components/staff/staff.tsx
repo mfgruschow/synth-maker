@@ -13,7 +13,7 @@ function Staff() {
 
       <div className="staff">
         <NoteSelectModalProvider>
-          {Array.from({ length: 16 }, (_, i) => (
+          {Array.from({ length: 48 }, (_, i) => (
             <NoteBlock key={i} noteId={i} />
           ))}
         </NoteSelectModalProvider>

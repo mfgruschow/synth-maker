@@ -1,8 +1,10 @@
 # Functionality:
-The app consists of a 4x8 grid of 48 note blocks.  You should be able to left click on a note block and select the chord you want it to be.  You can then click and drag that note across the other blocks to propagate them.  There will also be a BPM adjuster at the top of the screen to speed up/slow down the song, and an instrument selector.  The final piece of functionality is the ability to download a midi file that is compatible with Garage Band.  
+
+The app consists of a 4x8 grid of 48 note blocks. You should be able to left click on a note block and select the chord you want it to be. You can then click and drag that note across the other blocks to propagate them. There will also be a BPM adjuster at the top of the screen to speed up/slow down the song, and an instrument selector. The final piece of functionality is the ability to download a midi file that is compatible with Garage Band.
 
 ## Future functionality:
-Be able to add quarter notes/eighth notes.  Mobile functionlity for tablets.  
+
+Be able to add quarter notes/eighth notes. Mobile functionlity for tablets. Key changes.
 
 # React + TypeScript + Vite
 
@@ -19,9 +21,9 @@ If you are developing a production application, we recommend updating the config
 
 ```js
 export default tseslint.config([
-  globalIgnores(['dist']),
+  globalIgnores(["dist"]),
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     extends: [
       // Other configs...
 
@@ -36,40 +38,40 @@ export default tseslint.config([
     ],
     languageOptions: {
       parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
         tsconfigRootDir: import.meta.dirname,
       },
       // other options...
     },
   },
-])
+]);
 ```
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
 // eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+import reactX from "eslint-plugin-react-x";
+import reactDom from "eslint-plugin-react-dom";
 
 export default tseslint.config([
-  globalIgnores(['dist']),
+  globalIgnores(["dist"]),
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
     extends: [
       // Other configs...
       // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
+      reactX.configs["recommended-typescript"],
       // Enable lint rules for React DOM
       reactDom.configs.recommended,
     ],
     languageOptions: {
       parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
         tsconfigRootDir: import.meta.dirname,
       },
       // other options...
     },
   },
-])
+]);
 ```
