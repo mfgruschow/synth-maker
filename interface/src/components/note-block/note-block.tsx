@@ -4,14 +4,19 @@ import type { MidiWriterNote } from "../../utility/types";
 import { useDragContext } from "../../contexts/drag/use-drag-context";
 import noteIcon from "../../assets/music-note-icon.svg";
 import restIcon from "../../assets/rest-note-icon.svg";
+import { useNoteSelectModalContext } from "../../contexts/note-select-modal/use-note-select-modal-context";
 
 function NoteBlock({ noteId }: { noteId: number }) {
+  const modalWidth = 200; // pixels
+  const modalHeight = 400; // pixels
+
   const { isDragging, setIsDragging } = useDragContext();
+  const { handleOpen } = useNoteSelectModalContext();
 
   const [note, setNote] = useState<MidiWriterNote | null>(null);
   const [dragVisited, setDragVisited] = useState(false);
 
-  const noteRef = useRef<HTMLDivElement>(null);
+  const noteRef = useRef<HTMLButtonElement>(null);
   const timeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleDragStart = (event: React.DragEvent) => {
@@ -61,6 +66,27 @@ function NoteBlock({ noteId }: { noteId: number }) {
     noteRef.current?.classList.remove("dragging");
   };
 
+  const handleOnclick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    const rect = noteRef.current?.getBoundingClientRect();
+    if (rect) {
+      const coords = { x: rect.x + rect.width + 12, y: rect.y - 12 };
+
+      const { innerHeight, innerWidth } = window;
+      if (coords.x + modalWidth > innerWidth) {
+        // modal would overflow right edge, position to left instead
+        coords.x = rect.left - modalWidth - 12;
+      }
+      if (coords.y + modalHeight > innerHeight) {
+        // modal would overflow bottom edge, position above instead
+        coords.y = innerHeight - modalHeight - 12;
+      }
+
+      handleOpen(noteId, coords);
+    }
+  };
+
   useEffect(() => {
     if (!note) {
       noteRef.current?.classList.add("empty");
@@ -86,12 +112,13 @@ function NoteBlock({ noteId }: { noteId: number }) {
   }, [isDragging, dragVisited]);
 
   return (
-    <div
+    <button
       ref={noteRef}
       draggable={!!note}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
+      onClick={handleOnclick}
       className="note-block"
     >
       {/* Import the SVG as a module */}
@@ -101,7 +128,7 @@ function NoteBlock({ noteId }: { noteId: number }) {
       ) : (
         <img className="note-icon" src={restIcon} alt="Empty Note Icon" />
       )}
-    </div>
+    </button>
   );
 }
 export default NoteBlock;

@@ -13,6 +13,7 @@ body {
 }
 
 .App {
+  position: relative;
 }
 
 .app-header {

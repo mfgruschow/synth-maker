@@ -1,6 +1,5 @@
 import { useState, type ReactNode } from "react";
 import { NoteSelectModalContext } from "./note-select-modal-context";
-import type { NoteSelectInfo } from "../../utility/types";
 // eslint-disable-next-line max-len
 import { NoteSelectorModal } from "../../components/note-selector/note-selector";
 
@@ -9,22 +8,26 @@ export const NoteSelectModalProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleOpen =
-    () => (isOpen: boolean, noteSelectInfo?: NoteSelectInfo) => {
-      if (isOpen) {
-        // Logic to handle opening the modal with noteSelectInfo
-      } else {
-        // Logic to handle closing the modal
-      }
-      Z;
-      setIsModalOpen((prev) => !prev);
-    };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [noteId, setNoteId] = useState<number>(-1);
+  const [coords, setCoords] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+
+  const handleOpen = (id: number, newCoords: { x: number; y: number }) => {
+    if (noteId === -1 || id === noteId) setIsModalOpen((prev) => !prev);
+
+    // if()
+
+    setNoteId(id);
+    setCoords(newCoords);
+  };
 
   return (
     <NoteSelectModalContext.Provider value={{ isModalOpen, handleOpen }}>
-      {isModalOpen && <NoteSelectorModal />}
+      {isModalOpen && <NoteSelectorModal noteId={noteId} coords={coords} />}
       {children}
     </NoteSelectModalContext.Provider>
   );

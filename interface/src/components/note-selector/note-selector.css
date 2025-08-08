@@ -1,0 +1,11 @@
+.note-selector-modal {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 12px;
+  width: 200px;
+  height: 400px;
+  overflow-y: scroll;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
