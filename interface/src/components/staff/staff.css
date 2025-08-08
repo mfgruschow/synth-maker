@@ -1,7 +1,10 @@
 .staff {
-    width: 100%;
-    border: solid 1px black;
-    height: 32px;
-    display: grid;
-    grid-template-columns: repeat(16, 1fr);
+  width: 100%;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 8px;
+  border-radius: 4px;
+  padding: 12px;
 }

@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Playwrite+HU:wght@100..400&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  box-sizing: border-box;
+  color: white;
+  font-family: "Roboto Condensed", sans-serif;
+}
+
+body {
+  background-color: rgb(54, 52, 52);
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  position: relative;
+}
+
+.app-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(54, 52, 52);
+}
+
+@keyframes flicker {
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+    text-shadow: 0 0 5px #ff4fa3, 0 0 10px #ff4fa3, 0 0 20px #ff6fc1,
+      0 0 40px #ff99d6, 0 0 80px #ffc1e6;
+  }
+
+  20%,
+  24%,
+  55% {
+    text-shadow: none;
+  }
+}
+
+.app-title {
+  font-family: "Playwrite HU", sans-serif;
+  font-size: 2rem;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  color: #ff4fa3;
+  text-shadow: 0 0 5px #ff4fa3, 0 0 10px #ff4fa3, 0 0 20px #ff6fc1,
+    0 0 40px #ff99d6, 0 0 80px #ffc1e6;
+
+  animation: flicker 1.5s 2 alternate;
+}
